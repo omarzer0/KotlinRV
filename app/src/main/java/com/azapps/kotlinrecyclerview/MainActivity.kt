@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), OnExampleItemClickListener {
-    private val exampleList = generateDummyList(4)
-    private val adapter = ExampleAdapter(exampleList, this)
+    private val exampleList = generateDummyList(100)
+    private val adapter = ExampleAdapter(this)
     private var counter = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity(), OnExampleItemClickListener {
         recycler_view.adapter = adapter
         recycler_view.layoutManager = LinearLayoutManager(this)
         recycler_view.setHasFixedSize(true)
+        adapter.submitList(exampleList)
     }
 
     private fun generateDummyList(size: Int): ArrayList<ExampleItem> {
@@ -41,15 +42,15 @@ class MainActivity : AppCompatActivity(), OnExampleItemClickListener {
     fun insertItem(view: View) {
         val item = ExampleItem(R.drawable.ic_plus_one, "added item $counter", "line #$counter")
         exampleList.add(3, item)
+        adapter.submitList(exampleList)
         counter++
-        adapter.notifyItemInserted(3)
     }
 
     fun removeItem(view: View) {
         if (exampleList.size > 3) {
             exampleList.removeAt(3)
-            adapter.notifyItemRemoved(3)
-            Toast.makeText(this@MainActivity, "list size =${exampleList.size}", Toast.LENGTH_SHORT)
+            adapter.submitList(exampleList)
+            Toast.makeText(this, "list size =${exampleList.size}", Toast.LENGTH_SHORT)
                 .show()
         }
     }
@@ -59,7 +60,7 @@ class MainActivity : AppCompatActivity(), OnExampleItemClickListener {
         val clickedItem = exampleList[position]
         clickedItem.imageRes = R.drawable.ic_clicked
         clickedItem.name = "clicked"
-        adapter.notifyItemChanged(position)
+        adapter.submitList(exampleList)
     }
 
 }

@@ -2,26 +2,23 @@ package com.azapps.kotlinrecyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ListAdapter
 
-class ExampleAdapter(private val exampleList: List<ExampleItem>, private val listener:OnExampleItemClickListener) :
-    RecyclerView.Adapter<ExampleViewHolder>() {
+class ExampleAdapter(private val listener: OnExampleItemClickListener) :
+    ListAdapter<ExampleItem, ExampleViewHolder>(DiffUtilExampleCallback()) {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExampleViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(
-            R.layout.item_layout,
-            parent, false
-        )
-        return ExampleViewHolder(itemView, listener)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_layout, parent, false)
+        return ExampleViewHolder(view, listener)
     }
 
     override fun onBindViewHolder(holder: ExampleViewHolder, position: Int) {
-        val currentItem = exampleList[position]
+        val currentItem = getItem(position)
         holder.imageView.setImageResource(currentItem.imageRes)
         holder.nameTextView.text = currentItem.name
         holder.textTextView.text = currentItem.text
     }
-
-    override fun getItemCount() = exampleList.size
 
 }
