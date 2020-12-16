@@ -42,14 +42,14 @@ class MainActivity : AppCompatActivity(), OnExampleItemClickListener {
     fun insertItem(view: View) {
         val item = ExampleItem(R.drawable.ic_plus_one, "added item $counter", "line #$counter")
         exampleList.add(3, item)
-        adapter.submitList(exampleList)
+        adapter.submitList(exampleList.toMutableList())
         counter++
     }
 
     fun removeItem(view: View) {
         if (exampleList.size > 3) {
             exampleList.removeAt(3)
-            adapter.submitList(exampleList)
+            adapter.submitList(exampleList.toMutableList())
             Toast.makeText(this, "list size =${exampleList.size}", Toast.LENGTH_SHORT)
                 .show()
         }
@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity(), OnExampleItemClickListener {
         val clickedItem = exampleList[position]
         clickedItem.imageRes = R.drawable.ic_clicked
         clickedItem.name = "clicked"
-        adapter.submitList(exampleList)
+        adapter.submitList(exampleList.toMutableList())
     }
 
 }
